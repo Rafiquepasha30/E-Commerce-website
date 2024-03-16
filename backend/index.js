@@ -1,6 +1,5 @@
-require('dotenv').config();
+
 const port = process.env.PORT || 4000;
-const mongoURI = process.env.MONGODB_URI;
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -14,7 +13,11 @@ app.use(cors());
 
 // data base connection using MongoDB
 
-mongoose.connect("mongodb+srv://rafiquepasha:Rafiquepasha@cluster0.aeov2ym.mongodb.net/e-commerce");
+const DB = 'mongodb+srv://rafiquepasha:Rafiquepasha@cluster0.aeov2ym.mongodb.net/e-commerce'
+
+mongoose.connect(DB).then(()=>{
+    console.log(`connection successful`);
+}).catch((err)=>console.log(`no connection`));
 
 //API creation 
 
