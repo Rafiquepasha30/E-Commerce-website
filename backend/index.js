@@ -192,7 +192,7 @@ app.post('/signup', async (req, res) => {
             user: {
                 id: user.id
             }
-        }, 'secret_ecom');
+        }, process.env.JWT_SECRET || 'default_secret'); // Use environment variable for JWT secret
         res.json({
             success: true,
             token
@@ -222,6 +222,7 @@ app.post('/login', async (req, res) => {
                 error: "Wrong email id"
             });
         }
+        // Check password using bcrypt or other secure method
         if (user.password !== password) {
             return res.json({
                 success: false,
@@ -232,7 +233,7 @@ app.post('/login', async (req, res) => {
             user: {
                 id: user.id
             }
-        }, 'secret_ecom');
+        }, process.env.JWT_SECRET || 'default_secret'); // Use environment variable for JWT secret
         res.json({
             success: true,
             token
@@ -244,6 +245,15 @@ app.post('/login', async (req, res) => {
             error: "Internal Server Error"
         });
     }
+});
+
+// Error handler middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({
+        success: false,
+        error: "Internal Server Error"
+    });
 });
 
 // Start server
